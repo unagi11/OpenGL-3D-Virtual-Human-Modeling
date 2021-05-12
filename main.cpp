@@ -33,7 +33,7 @@ GLdouble radianH = 90;
 GLfloat AmbientLightValue[] = { 0.3f, 0.3f, 0.3f, 1.0f };
 GLfloat DiffuseLightValue[] = { 0.7f, 0.7f, 0.7f, 1.0f };
 GLfloat SpecularLightValue[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat PositionLightValue[] = { 5, 5, 5, 0.0f };
+GLfloat PositionLightValue[] = { 3, 5, 3, 0.0f };
 
 GLfloat mat_ambdif[] = { 0.7, 0.7, 0.7, 1.0 };
 GLfloat mat_spc[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -67,6 +67,7 @@ void DrawBox(int texture, float texture_start[], float size[], float translate[]
     float right = left + size_x;
     float bottom = top + size_y;
 
+    glNormal3f(0.0f, 0.0f, 1.0f);
     glTexCoord2f(left, bottom);
     glVertex3f(-1.0f, -1.0f, 1.0f);   // ÁÂÇÏ´Ü
     glTexCoord2f(right, bottom);
@@ -82,6 +83,7 @@ void DrawBox(int texture, float texture_start[], float size[], float translate[]
     right = left + size_x;
     bottom = top + size_y;
 
+    glNormal3f(0.0f, 0.0f, -1.0f);
     glTexCoord2f(left, bottom);
     glVertex3f(1.0f, -1.0f, -1.0f);
     glTexCoord2f(right, bottom);
@@ -97,6 +99,7 @@ void DrawBox(int texture, float texture_start[], float size[], float translate[]
     right = left + size_x;
     bottom = top + size_z;
 
+    glNormal3f(0.0f, 1.0f, 0.0f);
     glTexCoord2f(left, bottom);
     glVertex3f(-1.0f, 1.0f, 1.0f);
     glTexCoord2f(right, bottom);
@@ -112,6 +115,7 @@ void DrawBox(int texture, float texture_start[], float size[], float translate[]
     right = left + size_x;
     bottom = top + size_z;
 
+    glNormal3f(0.0f, -1.0f, 0.0f);
     glTexCoord2f(left, bottom);
     glVertex3f(-1.0f, -1.0f, 1.0f);
     glTexCoord2f(left, top);
@@ -127,6 +131,7 @@ void DrawBox(int texture, float texture_start[], float size[], float translate[]
     right = left + size_z;
     bottom = top + size_y;
 
+    glNormal3f(1.0f, 0.0f, 0.0f);
     glTexCoord2f(left, bottom);
     glVertex3f(1.0f, -1.0f, 1.0f);
     glTexCoord2f(right, bottom);
@@ -142,6 +147,7 @@ void DrawBox(int texture, float texture_start[], float size[], float translate[]
     right = left + size_z;
     bottom = top + size_y;
 
+    glNormal3f(-1.0f, 0.0f, 0.0f);
     glTexCoord2f(left, bottom);
     glVertex3f(-1.0f, -1.0f, -1.0f);
     glTexCoord2f(right, bottom);
@@ -163,10 +169,11 @@ void DrawHuman() {
     gluPerspective(60, SCR_WIDTH / SCR_HEIGHT, 1.0, 2000);
     gluLookAt(
         zoom * cos(radianH * PI / 180),
-        zoom * sin(radianV * PI / 180),
+        zoom * sin(radianV * PI / 180) + 0.25,
         zoom * sin(radianH * PI / 180),
-        0, 0, 0, 0, 1, 0);
-
+        0, 0.25, 0, 
+        0, 1, 0);
+        
     glMatrixMode(GL_MODELVIEW);
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambdif);
@@ -359,6 +366,7 @@ void DrawAxis() {
 
     glLineWidth(10.0);
     glBegin(GL_LINE_STRIP);
+    glNormal3f(1, 0.5, 0);
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, r_mat_ambdif);
     glVertex3f(0.0, 0, 0.0);
     glVertex3f(10.0, 0, 0.0);
@@ -431,8 +439,8 @@ void keyboard(unsigned char key, int x, int y) {
     else if (key == 'z') // zoom out
         zoom += 0.1;
 
-    if (key >= '1' && key <= '5')
-        currentTexture = textures[key - '0'];
+    if (key >= '1' && key <= '9')
+        currentTexture = textures[key - '1'];
 
     glutPostRedisplay();
 }
@@ -488,8 +496,8 @@ int main(int argc, char** argv) {
     load_image("debug.png", 1);
     load_image("Gawr_Gura.png", 2);
     load_image("usada_pekora.png", 3);
-    //load_image("RGB.png", 4);
-    //load_image("hacker.png", 5);
+    load_image("RGB.png", 4);
+    load_image("hacker.png", 5);
 
     glEnable(GL_TEXTURE_2D);
     currentTexture = textures[0];
