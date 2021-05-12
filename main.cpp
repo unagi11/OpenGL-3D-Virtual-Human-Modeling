@@ -21,7 +21,7 @@ using namespace std;
 float SCR_WIDTH, SCR_HEIGHT;
 
 GLuint currentTexture = 0;
-GLuint textures[6];
+GLuint textures[10];
 
 bool isMousePushed;
 GLdouble startX, startY, startRH, startRV;
@@ -43,6 +43,14 @@ GLfloat r_mat_ambdif[] = { 1.0, 0.0, 0.0, 1.0 };
 GLfloat g_mat_ambdif[] = { 0.0, 1.0, 0.0, 1.0 };
 GLfloat b_mat_ambdif[] = { 0.0, 0.0, 1.0, 1.0 };
 
+/// <summary>
+/// 월드에 박스를 그리는 함수
+/// </summary>
+/// <param name="texture">텍스쳐 번호</param>
+/// <param name="texture_start">이미지 내에서 박스 텍스쳐의 위치</param>
+/// <param name="size">박스의 x,y,z 크기</param>
+/// <param name="translate">박스의 위치</param>
+/// <param name="scale">박스의 원래 크기에서 몇배</param>
 void DrawBox(int texture, float texture_start[], float size[], float translate[], float scale) {
 
     float box_left = texture_start[0];
@@ -160,6 +168,9 @@ void DrawBox(int texture, float texture_start[], float size[], float translate[]
     glPopMatrix();
 }
 
+/// <summary>
+/// 월드에 Human Model을 그리는 함수
+/// </summary>
 void DrawHuman() {
 
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
@@ -343,6 +354,9 @@ void DrawHuman() {
 
 }
 
+/// <summary>
+/// Axis Indicator를 왼쪽 아래에 그리는 함수
+/// </summary>
 void DrawAxis() {
 
     glViewport(0, 0, 150, 150);
@@ -386,9 +400,6 @@ void Display() {
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
 
     DrawHuman();
     DrawAxis();
@@ -442,6 +453,9 @@ void keyboard(unsigned char key, int x, int y) {
     if (key >= '1' && key <= '9')
         currentTexture = textures[key - '1'];
 
+    if (key == '0')
+        currentTexture = -1;
+
     glutPostRedisplay();
 }
 
@@ -490,7 +504,7 @@ int main(int argc, char** argv) {
     glEnable(GL_DEPTH_TEST);
 
     // texture setting
-    glGenTextures(6, textures);
+    glGenTextures(10, textures);
 
     load_image("steve.png", 0);
     load_image("debug.png", 1);
@@ -498,6 +512,9 @@ int main(int argc, char** argv) {
     load_image("usada_pekora.png", 3);
     load_image("RGB.png", 4);
     load_image("hacker.png", 5);
+    load_image("prestonplayz.png", 6);
+    load_image("elsa.png", 7);
+    load_image("ironman.png", 8);
 
     glEnable(GL_TEXTURE_2D);
     currentTexture = textures[0];
